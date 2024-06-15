@@ -4,7 +4,7 @@ import src.read as read
 
 
 def main():
-    print('Hello, World!')
+    print('Read SRI Catalogue and insert into MongoDB')
     read.read_file()
 
 
