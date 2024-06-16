@@ -100,3 +100,8 @@ class Read:
                     self.collection_entities.delete_one({'_id': uniqueId})
                     #  print(f'Deleted: {uniqueId} -> {result['_id']['identification']}')
                 i += 1
+
+    def create_index(self):
+        self.collection_entities.create_index(
+            [('identification', 'text')], name='identification_text', unique=True
+        )

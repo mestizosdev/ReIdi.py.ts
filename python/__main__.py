@@ -17,6 +17,7 @@ def main():
     read = Read(db_name, custom_separator, drop=True)
     read.read_data(path)
     read.remove_duplicates()
+    read.create_index()
 
 
 if __name__ == '__main__':
