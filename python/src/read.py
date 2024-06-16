@@ -69,3 +69,29 @@ class Read:
 
         self.collection_entities.insert_many(data)
         print('Finished inserting into MongoDB')
+
+    def remove_duplicates(self):
+        pipeline = [
+            {
+                '$group': {
+                    '_id': {'identification': '$identification'},
+                    'uniqueIds': {'$addToSet': '$_id'},
+                    'count': {'$sum': 1},
+                }
+            },
+            {'$match': {'count': {'$gt': 1}}},
+        ]
+
+        results = self.collection_entities.aggregate(pipeline)
+        results_list = list(results)
+
+        for result in results_list:
+            # print('Duplicated: ')
+            # print('Identification: ', result['_id']['identification'])
+            # print('Count:', result['count'])
+            i = 1
+            for uniqueId in result['uniqueIds']:
+                if i > 1:
+                    self.collection_entities.delete_one({'_id': uniqueId})
+                    print('Deleted: ', uniqueId)
+                i += 1

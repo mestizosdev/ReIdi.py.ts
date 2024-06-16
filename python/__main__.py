@@ -15,6 +15,7 @@ def main():
 
     read = Read(db_name, custom_separator, drop=True)
     read.read_file()
+    read.remove_duplicates()
 
 
 if __name__ == '__main__':
