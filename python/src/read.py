@@ -23,53 +23,57 @@ class Read:
 
         for file in dir_list:
             file_path = path + file
-            print(f'Read file: {file_path}')
-            self.__read_files(file_path)
+            if file.endswith('.csv'):
+                print(f'Read file: {file_path}')
+                self.__read_files(file_path)
 
     def __read_files(self, file_path: str):
-        df = pd.read_csv(file_path, dtype=str, sep=self.__separator, encoding='latin')
+        try:
+            df = pd.read_csv(file_path, dtype=str, sep=self.__separator, encoding='latin')
 
-        print(df.dtypes)
-        print(df.head())
-        selection = df[
-            [
-                'NUMERO_RUC',
-                'RAZON_SOCIAL',
-                'NOMBRE_FANTASIA_COMERCIAL',
-                'CLASE_CONTRIBUYENTE',
-                'TIPO_CONTRIBUYENTE',
-                'DESCRIPCION_PROVINCIA_EST',
-                'DESCRIPCION_CANTON_EST',
-                'DESCRIPCION_PARROQUIA_EST',
-                'ACTIVIDAD_ECONOMICA',
-                'OBLIGADO',
-                'CODIGO_CIIU',
-                'ESTADO_CONTRIBUYENTE',
+            print(df.dtypes)
+            print(df.head())
+            selection = df[
+                [
+                    'NUMERO_RUC',
+                    'RAZON_SOCIAL',
+                    'NOMBRE_FANTASIA_COMERCIAL',
+                    'CLASE_CONTRIBUYENTE',
+                    'TIPO_CONTRIBUYENTE',
+                    'DESCRIPCION_PROVINCIA_EST',
+                    'DESCRIPCION_CANTON_EST',
+                    'DESCRIPCION_PARROQUIA_EST',
+                    'ACTIVIDAD_ECONOMICA',
+                    'OBLIGADO',
+                    'CODIGO_CIIU',
+                    'ESTADO_CONTRIBUYENTE',
+                ]
             ]
-        ]
 
-        selection_copy = selection.copy()
-        selection_copy.rename(
-            columns={
-                'NUMERO_RUC': 'identification',
-                'RAZON_SOCIAL': 'name',
-                'NOMBRE_FANTASIA_COMERCIAL': 'trade_name',
-                'CLASE_CONTRIBUYENTE': 'category',
-                'TIPO_CONTRIBUYENTE': 'type',
-                'DESCRIPCION_PROVINCIA_EST': 'province',
-                'DESCRIPCION_CANTON_EST': 'canton',
-                'DESCRIPCION_PARROQUIA_EST': 'parish',
-                'OBLIGADO': 'mandatory_accounting',
-                'ACTIVIDAD_ECONOMICA': 'economic_activity',
-                'CODIGO_CIIU': 'code_ciiu',
-                'ESTADO_CONTRIBUYENTE': 'status',
-            },
-            inplace=True,
-        )
+            selection_copy = selection.copy()
+            selection_copy.rename(
+                columns={
+                    'NUMERO_RUC': 'identification',
+                    'RAZON_SOCIAL': 'name',
+                    'NOMBRE_FANTASIA_COMERCIAL': 'trade_name',
+                    'CLASE_CONTRIBUYENTE': 'category',
+                    'TIPO_CONTRIBUYENTE': 'type',
+                    'DESCRIPCION_PROVINCIA_EST': 'province',
+                    'DESCRIPCION_CANTON_EST': 'canton',
+                    'DESCRIPCION_PARROQUIA_EST': 'parish',
+                    'OBLIGADO': 'mandatory_accounting',
+                    'ACTIVIDAD_ECONOMICA': 'economic_activity',
+                    'CODIGO_CIIU': 'code_ciiu',
+                    'ESTADO_CONTRIBUYENTE': 'status',
+                },
+                inplace=True,
+            )
 
-        print(selection_copy)
-        data = selection_copy.to_dict(orient='records')
-        self.__load_into_database(data)
+            print(selection_copy)
+            data = selection_copy.to_dict(orient='records')
+            self.__load_into_database(data)
+        except Exception as e:
+            print('Error to read file: ', file_path, e)
 
     def __load_into_database(self, data: dict):
         self.collection.insert_many(data)
