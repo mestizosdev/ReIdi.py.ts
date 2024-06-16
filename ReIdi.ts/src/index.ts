@@ -1,9 +1,10 @@
 import { Hono } from 'hono'
+import ping from './ping/ping'
+import version from './version/version'
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.route('/', ping)
+app.route('/', version)
 
 export default app
