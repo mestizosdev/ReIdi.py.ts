@@ -2,19 +2,23 @@
 
 ## Count
 ```
-db.entities.countDocuments()
+db.taxpayers.countDocuments()
 ```
 ## Group
 ```
-db.entities.aggregate([ { $group: { _id: '$type', count: { $sum: 1 } } }] )
+db.taxpayers.aggregate([ { $group: { _id: '$type', count: { $sum: 1 } } }] )
 ```
-## Find
+## Find ilike
 ```
-db.entities.find({name: /.*jorge luis.*/i})
+db.taxpayers.find({name: /.*jorge luis.*/i})
+```
+## Find not in
+```
+db.taxpayers.find({type:{$nin:['PERSONAS NATURALES']}})
 ```
 ## Find duplicates
 ```
-db.entities.aggregate([ { $group: { _id: { identification: '$identification' }, uniqueIds: { $addToSet: '$_id' }, count: { $sum: 1 } } }, { $match: { count: { $gt: 1 } } }] )
+db.taxpayers.aggregate([ { $group: { _id: { identification: '$identification' }, uniqueIds: { $addToSet: '$_id' }, count: { $sum: 1 } } }, { $match: { count: { $gt: 1 } } }] )
 ```
 ## Search to extract for the persons collection
 ```
