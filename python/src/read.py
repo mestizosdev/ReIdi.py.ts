@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import os
 import pandas as pd
 from pymongo import MongoClient
 
@@ -10,15 +10,20 @@ class Read:
         self.__database = database
         self.__separator = separator
         self.__drop_collection = drop
-        self.file_path = '../csv/SRI_RUC_Galapagos.csv'
         client = MongoClient(self.__database)
         db = client['ecuador']
         self.collection_entities = db['entities']
 
-    def read_file(self):
-        df = pd.read_csv(
-            self.file_path, dtype=str, sep=self.__separator, encoding='latin'
-        )
+    def read_data(self, path: str):
+        dir_list = os.listdir(path)
+
+        for file in dir_list:
+            file_path = path + file
+            print(f'Read file: {file_path}')
+            self.__read_files(file_path)
+
+    def __read_files(self, file_path: str):
+        df = pd.read_csv(file_path, dtype=str, sep=self.__separator, encoding='latin')
 
         print(df.dtypes)
         print(df.head())
@@ -93,5 +98,5 @@ class Read:
             for uniqueId in result['uniqueIds']:
                 if i > 1:
                     self.collection_entities.delete_one({'_id': uniqueId})
-                    print('Deleted: ', uniqueId)
+                    print(f'Deleted: {uniqueId} -> {result['_id']['identification']}')
                 i += 1

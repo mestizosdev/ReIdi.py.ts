@@ -162,4 +162,5 @@ cython_debug/
 #.idea/
 
 .ruff_cache/
-csv/
+#csv/
+.DS_Store

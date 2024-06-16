@@ -10,11 +10,12 @@ def main():
 
     custom_separator = config.get('Parameter', 'custom_separator')
     db_name = config.get('Database', 'db_name')
+    path = config.get('Folder', 'path')
 
     print('Read SRI catalogue and insert into MongoDB')
 
     read = Read(db_name, custom_separator, drop=True)
-    read.read_file()
+    read.read_data(path)
     read.remove_duplicates()
 
 
