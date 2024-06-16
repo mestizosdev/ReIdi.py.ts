@@ -15,6 +15,10 @@ class Read:
         self.collection_entities = db['entities']
 
     def read_data(self, path: str):
+        if self.__drop_collection == True:
+            self.collection_entities.drop()
+            print('Droped collection entities')
+
         dir_list = os.listdir(path)
 
         for file in dir_list:
@@ -68,10 +72,6 @@ class Read:
         self.__load_into_database(data)
 
     def __load_into_database(self, data: dict):
-        if self.__drop_collection == True:
-            self.collection_entities.drop()
-            print('Droped collection entities')
-
         self.collection_entities.insert_many(data)
         print('Finished inserting into MongoDB')
 
@@ -98,5 +98,5 @@ class Read:
             for uniqueId in result['uniqueIds']:
                 if i > 1:
                     self.collection_entities.delete_one({'_id': uniqueId})
-                    print(f'Deleted: {uniqueId} -> {result['_id']['identification']}')
+                    #  print(f'Deleted: {uniqueId} -> {result['_id']['identification']}')
                 i += 1
