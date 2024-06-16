@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 import click
 import configparser
+import os
 from src.read import Read
+from terminaltexteffects.effects import effect_decrypt
 
 
 @click.command()
@@ -13,8 +15,6 @@ def main():
     custom_separator = config.get('Parameter', 'custom_separator')
     db_name = config.get('Database', 'db_name')
     path = config.get('Folder', 'path')
-
-    print('Read SRI catalogue and insert into MongoDB')
 
     read = None
     if click.confirm(
@@ -39,4 +39,13 @@ def main():
 
 
 if __name__ == '__main__':
+    if os.name == 'posix':
+        os.system('clear')
+    else:
+        os.system('cls')
+
+    effect = effect_decrypt.Decrypt('Read SRI catalogue and insert into MongoDB')
+    with effect.terminal_output() as terminal:
+        for frame in effect:
+            terminal.print(frame)
     main()
