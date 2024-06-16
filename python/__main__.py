@@ -4,6 +4,7 @@ import click
 import configparser
 import os
 from src.read import Read
+from src.extract import Extract
 from terminaltexteffects.effects import effect_decrypt
 
 
@@ -36,6 +37,14 @@ def main():
         if click.confirm('Do you want create index?', default=True, abort=False):
             print('Starting creating index')
             read.create_index()
+
+    if click.confirm(
+        'Do you want extract and insert into persons?', default=True, abort=False
+    ):
+        extract = Extract(db_name)
+        print('Starting extracting data for insert into persons')
+        extract.extract_and_insert()
+        extract.create_index()
 
 
 if __name__ == '__main__':
