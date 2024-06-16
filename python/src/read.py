@@ -12,12 +12,12 @@ class Read:
         self.__drop_collection = drop
         client = MongoClient(self.__database)
         db = client['ecuador']
-        self.collection_entities = db['entities']
+        self.collection = db['taxpayers']
 
     def read_data(self, path: str):
         if self.__drop_collection == True:
-            self.collection_entities.drop()
-            print('Droped collection entities')
+            self.collection.drop()
+            print('Droped collection taxpayers')
 
         dir_list = os.listdir(path)
 
@@ -72,8 +72,8 @@ class Read:
         self.__load_into_database(data)
 
     def __load_into_database(self, data: dict):
-        self.collection_entities.insert_many(data)
-        print('Finished inserting into MongoDB')
+        self.collection.insert_many(data)
+        print('Finished inserting into taxpayers collection')
 
     def remove_duplicates(self):
         pipeline = [
@@ -87,7 +87,7 @@ class Read:
             {'$match': {'count': {'$gt': 1}}},
         ]
 
-        results = self.collection_entities.aggregate(pipeline)
+        results = self.collection.aggregate(pipeline)
         results_list = list(results)
 
         for result in results_list:
@@ -97,11 +97,15 @@ class Read:
             i = 1
             for uniqueId in result['uniqueIds']:
                 if i > 1:
-                    self.collection_entities.delete_one({'_id': uniqueId})
+                    self.collection.delete_one({'_id': uniqueId})
                     #  print(f'Deleted: {uniqueId} -> {result['_id']['identification']}')
                 i += 1
 
+        print('Finished removing duplicates in taxpayers collection')
+
     def create_index(self):
-        self.collection_entities.create_index(
+        self.collection.create_index(
             [('identification', 'text')], name='identification_text', unique=True
         )
+
+        print('Finished creating indexes in taxpayers collection')
