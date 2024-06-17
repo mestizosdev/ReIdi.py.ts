@@ -6,7 +6,6 @@ import ping from './ping/ping'
 import entity from './entity/entity'
 import version from './version/version'
 import dbConnect from './db/connect'
-import personModel from './db/person.model'
 
 const app = new Hono()
 
