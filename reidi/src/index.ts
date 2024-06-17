@@ -3,6 +3,7 @@ import { poweredBy } from 'hono/powered-by'
 import { logger } from 'hono/logger'
 
 import ping from './ping/ping'
+import entity from './entity/entity'
 import version from './version/version'
 import dbConnect from './db/connect'
 import personModel from './db/persons.model'
@@ -13,13 +14,13 @@ app.use(poweredBy())
 app.use(logger())
 
 app.route('/', ping)
-// app.route('/', version)
+app.route('/', entity)
+app.route('/', version)
 
 dbConnect()
   .then(() => {
     app.get('/', async (c) => {
-      const persons = await personModel
-        .find({ identification: '0400882965' })
+      const persons = await personModel.find({ identification: '0400882965' })
 
       return c.json(
         persons.map((p) => p.toObject()),
@@ -38,7 +39,6 @@ dbConnect()
 
       return c.json(person.toObject())
     })
-
   })
   .catch((err) => {
     app.get('/*', (c) => {
