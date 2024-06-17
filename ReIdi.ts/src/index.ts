@@ -18,12 +18,27 @@ app.route('/', ping)
 dbConnect()
   .then(() => {
     app.get('/', async (c) => {
-      const persons = await personModel.find()
+      const persons = await personModel
+        .find({ identification: '0400882965' })
+
       return c.json(
         persons.map((p) => p.toObject()),
         200
       )
     })
+
+    app.get('/:identification', async (c) => {
+      const identification = c.req.param('identification')
+
+      const person = await personModel.findOne({ identification })
+
+      if (!person) {
+        return c.json('Not found', 404)
+      }
+
+      return c.json(person.toObject())
+    })
+
   })
   .catch((err) => {
     app.get('/*', (c) => {
