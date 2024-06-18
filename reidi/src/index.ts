@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { poweredBy } from 'hono/powered-by'
 import { logger } from 'hono/logger'
 
+import log from './logger'
 import ping from './ping/ping'
 import entity from './entity/entity'
 import version from './version/version'
@@ -13,7 +14,7 @@ app.use(poweredBy())
 app.use(logger())
 
 if (process.env.MODE_ENV === 'development') {
-  console.log('MODE ENV', process.env.MODE_ENV)
+  log.info(`Startup in ${process.env.MODE_ENV} mode`)
   app.route('/', version)
 }
 
@@ -22,14 +23,14 @@ app.route('/', entity)
 
 dbConnect()
   .then(() => {
-    console.log('Server ready!!!')
+    log.info('Server ready!!!')
   })
   .catch((err) => {
-    console.log(`Error server ${err}`)
+    log.error(`Error server ${err}`)
   })
 
 app.onError((err, c) => {
-  console.log(`Error server ${err.message}`)
+  log.error(`Error server ${err.message}`)
   return c.json({ error: 'Internal error' }, 500)
 })
 
