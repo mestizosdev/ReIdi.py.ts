@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
 
 let version: string
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecuador'
+
 export default async function dbConnect() {
-  const db = await mongoose.connect(String(process.env.MONGODB_URI))
+  const db = await mongoose.connect(String(mongoUri))
 
   const admin = db.connection.db.admin()
   const serverInfo = await admin.serverInfo()
