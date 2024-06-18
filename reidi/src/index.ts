@@ -12,8 +12,12 @@ const app = new Hono()
 app.use(poweredBy())
 app.use(logger())
 
+if (process.env.MODE_ENV === 'development') {
+  console.log('MODE ENV', process.env.MODE_ENV)
+  app.route('/', version)
+}
+
 app.route('/', ping)
-app.route('/', version)
 app.route('/', entity)
 
 dbConnect()

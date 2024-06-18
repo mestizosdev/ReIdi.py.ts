@@ -13,9 +13,9 @@ version.get('/version', async (c) => {
       version: pkg.version,
       versionOS: os.platform() + ' ' + os.release() + ' ' + os.arch(),
       versionRuntime: `Bun ${Bun.version}`,
-      versionDatabase: 'Mongodb ' + serverVersion
+      versionDatabase: 'MongoDB ' + serverVersion
     },
-    201
+    200
   )
 })
 
