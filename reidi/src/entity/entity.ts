@@ -33,19 +33,15 @@ entity.get(
     if (identification.length === 10) {
       const person = await personModel.findOne({ identification })
 
-      if (!person) {
-        return c.json('Not found', 404)
+      if (person) {
+        return c.json(person.toObject())
       }
-
-      return c.json(person.toObject())
     } else if (identification.length === 13) {
       const taxpayer = await taxpayerModel.findOne({ identification })
 
-      if (!taxpayer) {
-        return c.json('Not found', 404)
+      if (taxpayer) {
+        return c.json(taxpayer.toObject())
       }
-
-      return c.json(taxpayer.toObject())
     }
 
     return c.json('Not found', 404)
