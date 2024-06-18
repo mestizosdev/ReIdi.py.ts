@@ -4,11 +4,13 @@
   "author": "Jorge Luis",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "format":"prettier --write \"src/**/*.+(ts|json|md)\""
+    "format": "prettier --write \"src/**/*.+(ts|json|md)\""
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.2.2",
     "hono": "^4.4.6",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.4.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bun": "latest",
