@@ -1,14 +1,20 @@
-To install dependencies:
+## To install dependencies:
 ```
 bun install
 ```
 
-To run:
+## Create .env file and add:
+```
+MODE_ENV='development'
+MONGODB_URI='mongodb://localhost:27017/ecuador'
+```
+
+## To run:
 ```
 bun run dev
 ```
 
-To run:
+## To format files:
 ```
 bun run format
 ```
