@@ -29,19 +29,19 @@ entity.get(
     return c.json(result.error.errors, 400)
   }
   */
-
-    if (identification.length === 10) {
-      const person = await personModel.findOne({ identification })
-
-      if (person) {
-        return c.json(person.toObject())
-      }
-    } else if (identification.length === 13) {
-      const taxpayer = await taxpayerModel.findOne({ identification })
-
-      if (taxpayer) {
-        return c.json(taxpayer.toObject())
-      }
+    switch (identification.length) {
+      case 10:
+        const person = await personModel.findOne({ identification })
+        if (person) {
+          return c.json(person.toObject())
+        }
+        break
+      case 13:
+        const taxpayer = await taxpayerModel.findOne({ identification })
+        if (taxpayer) {
+          return c.json(taxpayer.toObject())
+        }
+        break
     }
 
     return c.json('Not found', 404)
