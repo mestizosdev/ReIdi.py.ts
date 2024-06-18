@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
+import { zValidator } from '@hono/zod-validator'
 
 import personModel from '../db/person.model'
 import taxpayerModel from '../db/taxpayer.model'
@@ -15,34 +16,40 @@ const stringLenght10or13 = z
     }
   )
 
-entity.get('/entity/:identification', async (c) => {
-  const identification = c.req.param('identification')
+entity.get(
+  '/entity/:identification',
+  zValidator('param', z.object({ identification: stringLenght10or13 })),
+  async (c) => {
+    const identification = c.req.param('identification')
 
+    /*
   const result = stringLenght10or13.safeParse(identification)
 
   if (!result.success) {
-    return c.json(result.error.errors, 404)
+    return c.json(result.error.errors, 400)
   }
+  */
 
-  if (identification.length === 10) {
-    const person = await personModel.findOne({ identification })
+    if (identification.length === 10) {
+      const person = await personModel.findOne({ identification })
 
-    if (!person) {
-      return c.json('Not found', 404)
+      if (!person) {
+        return c.json('Not found', 404)
+      }
+
+      return c.json(person.toObject())
+    } else if (identification.length === 13) {
+      const taxpayer = await taxpayerModel.findOne({ identification })
+
+      if (!taxpayer) {
+        return c.json('Not found', 404)
+      }
+
+      return c.json(taxpayer.toObject())
     }
 
-    return c.json(person.toObject())
-  } else if (identification.length === 13) {
-    const taxpayer = await taxpayerModel.findOne({ identification })
-
-    if (!taxpayer) {
-      return c.json('Not found', 404)
-    }
-
-    return c.json(taxpayer.toObject())
+    return c.json('Not found', 404)
   }
-
-  return c.json('Not found', 404)
-})
+)
 
 export default entity
