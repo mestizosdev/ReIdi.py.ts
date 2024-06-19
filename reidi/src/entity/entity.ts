@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
+import { bearerAuth } from 'hono/bearer-auth'
 
 import personModel from '../db/person.model'
 import taxpayerModel from '../db/taxpayer.model'
@@ -15,6 +16,10 @@ const stringLenght10or13 = z
         'String must be either 10 or 13 characters long and contains only numbers'
     }
   )
+
+const token = 'honoiscool'
+
+entity.use('/entity/*', bearerAuth({ token }))
 
 entity.get(
   '/entity/:identification',

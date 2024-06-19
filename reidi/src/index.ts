@@ -29,9 +29,9 @@ dbConnect()
     log.error(`Error server ${err}`)
   })
 
-app.onError((err, c) => {
-  log.error(`Error server ${err.message}`)
-  return c.json({ error: 'Internal error' }, 500)
-})
+// app.onError((err, c) => {
+//   log.error(`Error server ${err.message}`)
+//   return c.json({ error: 'Internal error' }, 500)
+// })
 
 export default app
