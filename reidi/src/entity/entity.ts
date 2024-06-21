@@ -17,7 +17,7 @@ const stringLenght10or13 = z
     }
   )
 
-const token = 'honoiscool'
+const token = getToken()
 
 entity.use('/entity/*', bearerAuth({ token }))
 
@@ -52,5 +52,9 @@ entity.get(
     return c.json('Not found', 404)
   }
 )
+
+function getToken() {
+  return process.env.TOKEN
+}
 
 export default entity
