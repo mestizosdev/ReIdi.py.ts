@@ -3,8 +3,8 @@
 import click
 import configparser
 import os
-from src.read import Read
-from src.extract import Extract
+from reidi.read import Read
+from reidi.extract import Extract
 
 
 @click.command()

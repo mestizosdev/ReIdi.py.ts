@@ -31,8 +31,8 @@ class Read:
         try:
             df = pd.read_csv(file_path, dtype=str, sep=self.__separator, encoding='latin')
 
-            print(df.dtypes)
-            print(df.head())
+            # print(df.dtypes)
+            # print(df.head())
             selection = df[
                 [
                     'NUMERO_RUC',
@@ -69,7 +69,6 @@ class Read:
                 inplace=True,
             )
 
-            print(selection_copy)
             data = selection_copy.to_dict(orient='records')
             self.__load_into_database(data)
         except Exception as e:

@@ -30,12 +30,13 @@ class Extract:
         results = self.collection_taxpayers.aggregate(pipeline)
 
         results_list = list(results)
-        for result in results_list:
-            print('Identification: ', result['identification'])
-            print('Name: ', result['name'])
+        # for result in results_list:
+        #     print('Identification: ', result['identification'])
+        #     print('Name: ', result['name'])
 
         try:
-            self.__drop_index()
+            # self.__drop_index()
+            self.collection_persons.drop()
             self.collection_persons.insert_many(results_list)
         except Exception as e:
             print('Error to insert: ', e)
