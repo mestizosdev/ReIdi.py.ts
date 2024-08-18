@@ -36,4 +36,7 @@ ruff format .
 ```
 pip install -r requirements.txt
 ```
-
+## Run app
+```
+python __main__.py
+```

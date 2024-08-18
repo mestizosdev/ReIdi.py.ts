@@ -15,7 +15,7 @@ class Read:
         self.collection = db['taxpayers']
 
     def read_data(self, path: str):
-        if self.__drop_collection == True:
+        if self.__drop_collection:
             self.collection.drop()
             print('Droped collection taxpayers')
 
