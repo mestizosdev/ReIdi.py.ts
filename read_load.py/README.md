@@ -36,6 +36,8 @@ ruff format .
 ```
 pip install -r requirements.txt
 ```
+## Files to download
+https://www.sri.gob.ec/catastros
 ## Run app
 ```
 python __main__.py

@@ -1,5 +1,17 @@
 # Basic Documentation 
-
+## Basic commands
+### Start mongo shell
+```
+mongosh
+```
+### Show databases
+```
+show databases
+```
+### Use database
+```
+use ecuador     
+```
 ## Count
 ```
 db.taxpayers.countDocuments()
