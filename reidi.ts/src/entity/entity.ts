@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { bearerAuth } from 'hono/bearer-auth'
 
-import personModel from '../db/person.model'
-import taxpayerModel from '../db/taxpayer.model'
+import personModel from '../db.nosql/person.model'
+import taxpayerModel from '../db.nosql/taxpayer.model'
 
 const entity = new Hono()
 const stringLenght10or13 = z

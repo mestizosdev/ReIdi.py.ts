@@ -6,7 +6,9 @@ import log from './logger'
 import ping from './ping/ping'
 import entity from './entity/entity'
 import version from './version/version'
-import dbConnect from './db/connect'
+import dbConnect from './db.nosql/connect'
+import db from './db.sql/connect'
+import { users } from './db.sql/schema'
 
 const app = new Hono()
 
@@ -20,6 +22,12 @@ if (process.env.MODE_ENV === 'development') {
 
 app.route('/', ping)
 app.route('/', entity)
+
+app.get('/test', async (c) => {
+  const allUsers = await db.select().from(users).all()
+  console.log(allUsers)
+  return c.json({ message: 'test' })
+})
 
 dbConnect()
   .then(() => {
