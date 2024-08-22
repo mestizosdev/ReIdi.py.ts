@@ -166,3 +166,4 @@ cython_debug/
 .DS_Store
 node_modules/
 bun.lockb
+package-lock.json
