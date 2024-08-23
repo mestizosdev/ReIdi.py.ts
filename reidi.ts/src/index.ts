@@ -8,7 +8,7 @@ import entity from './entity/entity'
 import version from './version/version'
 import dbConnect from './db.nosql/connect'
 import db from './db.sql/connect'
-import { users } from './db.sql/schema'
+import { subscriptions } from './db.sql/schema'
 
 const app = new Hono()
 
@@ -24,8 +24,8 @@ app.route('/', ping)
 app.route('/', entity)
 
 app.get('/test', async (c) => {
-  const allUsers = await db.select().from(users).all()
-  console.log(allUsers)
+  const subs = await db.select().from(subscriptions).all()
+  console.log(subs)
   return c.json({ message: 'test' })
 })
 
