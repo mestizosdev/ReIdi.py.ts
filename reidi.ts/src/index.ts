@@ -7,8 +7,6 @@ import ping from './ping/ping'
 import entity from './entity/entity'
 import version from './version/version'
 import dbConnect from './db.nosql/connect'
-import db from './db.sql/connect'
-import { subscriptions } from './db.sql/schema'
 
 const app = new Hono()
 
@@ -23,12 +21,6 @@ if (process.env.MODE_ENV === 'development') {
 app.route('/', ping)
 app.route('/', entity)
 
-app.get('/test', async (c) => {
-  const subs = await db.select().from(subscriptions).all()
-  console.log(subs)
-  return c.json({ message: 'test' })
-})
-
 dbConnect()
   .then(() => {
     log.info('Server ready!!!')
@@ -36,10 +28,5 @@ dbConnect()
   .catch((err) => {
     log.error(`Error server ${err}`)
   })
-
-// app.onError((err, c) => {
-//   log.error(`Error server ${err.message}`)
-//   return c.json({ error: 'Internal error' }, 500)
-// })
 
 export default app

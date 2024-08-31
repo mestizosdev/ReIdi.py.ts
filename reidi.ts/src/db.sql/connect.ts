@@ -3,6 +3,6 @@ import { Database } from 'bun:sqlite'
 import * as schema from './schema'
 
 const sqlite = new Database('sqlite.db')
-const db = drizzle(sqlite, { schema })
+const db = drizzle(sqlite, { schema, logger: true })
 
 export default db

@@ -2,9 +2,13 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { bearerAuth } from 'hono/bearer-auth'
+import { eq, and } from 'drizzle-orm'
 
 import personModel from '../db.nosql/person.model'
 import taxpayerModel from '../db.nosql/taxpayer.model'
+
+import db from '../db.sql/connect'
+import { subscriptions } from '../db.sql/schema'
 
 const entity = new Hono()
 const stringLenght10or13 = z
@@ -17,9 +21,15 @@ const stringLenght10or13 = z
     }
   )
 
-const token = getToken()
-
-entity.use('/entity/*', bearerAuth({ token }))
+entity.use(
+  '/entity/*',
+  bearerAuth({
+    verifyToken: async (token, c) => {
+      const result = token === (await getTokenFronDb(token))
+      return result
+    }
+  })
+)
 
 entity.get(
   '/entity/:identification',
@@ -27,13 +37,6 @@ entity.get(
   async (c) => {
     const identification = c.req.param('identification')
 
-    /*
-  const result = stringLenght10or13.safeParse(identification)
-
-  if (!result.success) {
-    return c.json(result.error.errors, 400)
-  }
-  */
     switch (identification.length) {
       case 10:
         const person = await personModel.findOne({ identification })
@@ -53,8 +56,22 @@ entity.get(
   }
 )
 
-function getToken() {
-  return process.env.TOKEN
+async function getTokenFronDb(token: string): Promise<string | boolean> {
+  const result = await db
+    .select({
+      subscriberField: subscriptions.subscriber,
+      tokenField: subscriptions.token
+    })
+    .from(subscriptions)
+    .where(and(eq(subscriptions.token, token), eq(subscriptions.active, true)))
+
+  if (!result.length) {
+    return false
+  }
+
+  const { subscriberField, tokenField } = result[0]
+  console.log(`Subscriber ${subscriberField} is active`)
+  return tokenField
 }
 
 export default entity
