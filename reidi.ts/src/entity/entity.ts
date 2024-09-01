@@ -4,6 +4,7 @@ import { zValidator } from '@hono/zod-validator'
 import { bearerAuth } from 'hono/bearer-auth'
 import { eq, and } from 'drizzle-orm'
 
+import log from '../logger'
 import personModel from '../db.nosql/person.model'
 import taxpayerModel from '../db.nosql/taxpayer.model'
 
@@ -25,7 +26,7 @@ entity.use(
   '/entity/*',
   bearerAuth({
     verifyToken: async (token, c) => {
-      const result = token === (await getTokenFronDb(token))
+      const result = token === (await getTokenFromDb(token))
       return result
     }
   })
@@ -56,7 +57,7 @@ entity.get(
   }
 )
 
-async function getTokenFronDb(token: string): Promise<string | boolean> {
+async function getTokenFromDb(token: string): Promise<string | boolean> {
   const result = await db
     .select({
       subscriberField: subscriptions.subscriber,
@@ -70,7 +71,7 @@ async function getTokenFronDb(token: string): Promise<string | boolean> {
   }
 
   const { subscriberField, tokenField } = result[0]
-  console.log(`Subscriber ${subscriberField} is active`)
+  log.info(`Subscriber ${subscriberField} request a resource`)
   return tokenField
 }
 

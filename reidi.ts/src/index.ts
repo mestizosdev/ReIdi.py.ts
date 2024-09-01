@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { poweredBy } from 'hono/powered-by'
-import { logger } from 'hono/logger'
 
 import log from './logger'
 import ping from './ping/ping'
@@ -11,7 +10,6 @@ import dbConnect from './db.nosql/connect'
 const app = new Hono()
 
 app.use(poweredBy())
-app.use(logger())
 
 if (process.env.MODE_ENV === 'development') {
   log.info(`Startup in ${process.env.MODE_ENV} mode`)

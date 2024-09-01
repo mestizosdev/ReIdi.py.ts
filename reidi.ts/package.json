@@ -8,15 +8,15 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.2",
-    "   -orm": "^0.33.0",
-    "hono": "^4.5.8",
-    "mongoose": "^8.5.3",
+    "drizzle-orm": "^0.33.0",
+    "hono": "^4.5.10",
+    "mongoose": "^8.6.0",
     "winston": "^3.14.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "drizzle-kit": "^0.24.1",
+    "drizzle-kit": "^0.24.2",
     "prettier": "^3.3.3"
   }
 }
