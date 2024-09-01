@@ -26,7 +26,7 @@ entity.use(
   '/entity/*',
   bearerAuth({
     verifyToken: async (token, c) => {
-      const result = token === (await getTokenFromDb(token))
+      const result = await getTokenFromDb(token)
       return result
     }
   })
@@ -57,11 +57,10 @@ entity.get(
   }
 )
 
-async function getTokenFromDb(token: string): Promise<string | boolean> {
+async function getTokenFromDb(token: string): Promise<boolean> {
   const result = await db
     .select({
-      subscriberField: subscriptions.subscriber,
-      tokenField: subscriptions.token
+      subscriberField: subscriptions.subscriber
     })
     .from(subscriptions)
     .where(and(eq(subscriptions.token, token), eq(subscriptions.active, true)))
@@ -70,9 +69,9 @@ async function getTokenFromDb(token: string): Promise<string | boolean> {
     return false
   }
 
-  const { subscriberField, tokenField } = result[0]
+  const { subscriberField } = result[0]
   log.info(`Subscriber ${subscriberField} request a resource`)
-  return tokenField
+  return true
 }
 
 export default entity
