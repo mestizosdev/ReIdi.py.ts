@@ -26,5 +26,5 @@ open http://localhost:3000
 docker-compose up -d
 ```
 ```
-      docker-compose down
+docker-compose down
 ```
