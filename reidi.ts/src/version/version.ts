@@ -17,6 +17,7 @@ version.get('/version', async (c) => {
     {
       name: 'ReIdi',
       author: pkg.author,
+      website: 'https://mestizos.dev',
       version: pkg.version,
       versionOS: platform() + ' ' + release() + ' ' + arch(),
       versionRuntime: `Bun ${Bun.version}`,

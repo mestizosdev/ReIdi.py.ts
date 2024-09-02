@@ -20,3 +20,11 @@ bun run format
 ```
 
 open http://localhost:3000
+
+## Docker compose
+```
+docker-compose up -d
+```
+```
+      docker-compose down
+```
