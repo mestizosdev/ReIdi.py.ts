@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    image: bun_reidi
+    container_name: reidi
+    network_mode: bridge
+    ports:
+      - 3000:3000
+    environment:
+      MONGODB_URI: 'mongodb://host.docker.internal:27017/ecuador'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
