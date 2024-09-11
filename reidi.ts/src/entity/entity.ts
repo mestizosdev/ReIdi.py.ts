@@ -25,7 +25,7 @@ const stringLenght10or13 = z
 entity.use(
   '/entity/*',
   bearerAuth({
-    verifyToken: async (token, c) => {
+    verifyToken: async (token) => {
       const result = await getTokenFromDb(token)
       return result
     }
@@ -39,18 +39,20 @@ entity.get(
     const identification = c.req.param('identification')
 
     switch (identification.length) {
-      case 10:
+      case 10: {
         const person = await personModel.findOne({ identification })
         if (person) {
           return c.json(person.toObject())
         }
         break
-      case 13:
+      }
+      case 13: {
         const taxpayer = await taxpayerModel.findOne({ identification })
         if (taxpayer) {
           return c.json(taxpayer.toObject())
         }
         break
+      }
     }
 
     return c.json('Not found', 404)

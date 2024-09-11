@@ -2,9 +2,9 @@ import { createLogger, format, transports } from 'winston'
 const { combine, timestamp, colorize } = format
 
 // Custom format for console logging with colors
-const consoleLogFormat = format.combine(
-  format.colorize(),
-  format.printf(({ level, message, timestamp }) => {
+const consoleLogFormat = combine(
+  colorize(),
+  format.printf(({ level, message }) => {
     return `${level}: ${message}`
   })
 )
@@ -12,8 +12,8 @@ const consoleLogFormat = format.combine(
 // Create a Winston logger
 const log = createLogger({
   level: 'info',
-  format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  format: combine(
+    timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     format.align(),
     format.printf(
       (info) => `${info.level}: ${[info.timestamp]}: ${info.message}`
