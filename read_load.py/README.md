@@ -4,11 +4,11 @@ virtualenv venv
 ```
 or
 ```
-virtualenv -p python3.12 venv
+virtualenv -p python3.13 venv
 ```
 or
 ```
-python3.12 -m venv venv
+python3.13 -m venv venv
 ```
 ## Activate python virtual environment
 ```
@@ -40,5 +40,5 @@ pip install -r requirements.txt
 https://www.sri.gob.ec/catastros
 ## Run app
 ```
-python __main__.py
+python src/__main__.py
 ```

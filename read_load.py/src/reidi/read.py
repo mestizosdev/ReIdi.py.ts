@@ -3,6 +3,7 @@
 import os
 import pandas as pd
 from pymongo import MongoClient
+from datetime import datetime
 
 
 class Read:
@@ -77,6 +78,8 @@ class Read:
     def __load_into_database(self, data: dict):
         self.collection.insert_many(data)
         print('Finished inserting into taxpayers collection')
+        current_utc_time = datetime.utcnow()
+        self.collection.update_many({}, {'$set': {'created_at': current_utc_time}})
 
     def remove_duplicates(self):
         pipeline = [
